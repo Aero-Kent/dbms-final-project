@@ -1,0 +1,45 @@
++-----------------------------------------------+
+
+ >> Budget Management Website using both Python
+    and HTML.
+
++-----------------------------------------------+
+
+ Roadmap : 
+
+ 1.1. Create a Front Page, this is where you can
+    both sign-up and login.
+
+ 1.2. If you are able to login, you will be
+      redirected to another webpage which
+      contains your budget information.
+
+ 2.1. There will be two kinds of tables in the
+      database, what is a separate column
+      containing the IDs and Names of the users.
+
+ 2.2. As a Gap and due to time and skill
+      constraints, each users will not have their
+      own separate databases but are instead
+      shared by signing up. All of them must
+      know the password to sign-up/login.
+
+ 3.1 Create the python script containing the
+     logic of the website.
+
+ 3.2 Create an .HTML file to interact with the
+     database, there will be two which is the
+     front page and the main page.
+
++-----------------------------------------------+
+
+ Programmers : 
+  + De Guzman
+  + Masangkay
+
++-----------------------------------------------+
+
+ Requirements : 
+  + flask
+
++-----------------------------------------------+

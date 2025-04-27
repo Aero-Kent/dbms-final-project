@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+  body {
+    background-image: url("{{ url_for('static', filename='images/IMG20250422085341.jpg') }}");
+  }
+</style>
+
+<head>
+  <title>Budget Visualizer Studio (Temporary Name)</title>
+</head>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<body>
+
+  <div class = "header">
+    <div style="display: flex; align-items: center;">
+      <img src="{{ url_for('static', filename='images/piggy_bank_PNG56.png') }}" alt="main-logo" width="50" height="50">
+      <span>
+      <h1 style="margin-left: 10px; text-align: left;">Budget Visualizer</h1>
+      <h1 style="margin-left: 10px; text-align: left;">Studio (Temporary Name)</h1>
+      </span>
+      <button>ABOUT</button>
+      <button>LOGIN</button>
+      <button>SIGNUP</button>
+      <button>BUDGET ORGANIZER</button>
+    </div>
+  </div>
+
+  <!--
+  {% for val in content %}
+    <p>{{val}}</p>
+  {% endfor %}
+  -->
+
+  <!--
+  {% for i in range(10) %}
+    {% if i % 2 == 1 %}
+      <p>{{i}}</p>
+    {% endif %}
+  {% endfor %}
+  -->
+
+</body>
+
+</html>
