@@ -8,14 +8,18 @@
 
 <body class = 'home_page_body'>
   <header>
-    <div style = "display: flex; align-items: center;">
-      <img src = "{{ url_for('static', filename='images/temp_logo.png') }}" alt="main-logo" width="55px" height="40px">
-      <button onclick = "document.getElementById('home_page_about').scrollIntoView({ behavior: 'smooth' });">ABOUT</button>
-      <button onclick = "document.getElementById('home_page_guide').scrollIntoView({ behavior: 'smooth' });">GUIDE</button>
-      <button onclick = "window.location.href='/home/<username>'">COMPUTER MANAGEMENT</button>
-      <button style = "margin-left: 63%;" onclick="window.location.href='login'">LOGIN</button>
-      <button onclick = "window.location.href='signup'">SIGNUP</button>
-    </div>
+    <div class="navbar">
+      <div class="navbar-left">
+        <img src="{{ url_for('static', filename='images/temp_logo.png') }}" alt="main-logo" width="55px" height="40px">
+        <button onclick="document.getElementById('home_page_about').scrollIntoView({ behavior: 'smooth' });">ABOUT</button>
+        <button onclick="document.getElementById('home_page_guide').scrollIntoView({ behavior: 'smooth' });">GUIDE</button>
+        <button onclick="window.location.href='/home/<username>'">COMPUTER MANAGEMENT</button>
+      </div>
+      <div class="button-right">
+        <button onclick="window.location.href='login'">LOGIN</button>
+        <button onclick="window.location.href='signup'">SIGNUP</button>
+      </div>
+    </div>    
   </header>
   
   <div class = "home_page_fixed_wrapper">
