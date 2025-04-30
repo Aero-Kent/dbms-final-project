@@ -1,27 +1,32 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash, get_flashed_messages
-import sqlite3
-import os
 import subprocess
+import sqlite3
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 def turn_off_pc_windows(ip):
-    try:
-        subprocess.run(["powershell", "-Command", f"Stop-Computer -ComputerName {ip} -Force"], check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"An error was caught during PC shutdown! Error Code : {e}")
+    try: subprocess.run(["powershell", "-Command", f"Stop-Computer -ComputerName {ip} -Force"], check=True)
+    except subprocess.CalledProcessError as e: print(f"An error was caught during PC shutdown! Error Code : {e}")
 
 @app.route('/turn_off_pc', methods=['POST'])
 def turn_off_pc():
     ip_address = request.form.get('ip_address')
+    pc_id = request.form.get('pc_id')
 
-    if not ip_address:
-        return "IP address required", 400
-    
+    if not ip_address or not pc_id: return "Missing data", 400
+
     turn_off_pc_windows(ip_address)
+
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    cursor.execute("UPDATE pc_client SET status = 0 WHERE id = ?", (pc_id,))
+    conn.commit()
+    conn.close()
+
     flash("PC is being turned off.", "info")
-    return redirect(url_for('user_items', username=session.get('username')))
+    return redirect(url_for('pc_client_manager', username=session.get('username')))
 
 def init_db():
     conn = sqlite3.connect('users.db')
@@ -36,7 +41,7 @@ def init_db():
     ''')
 
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS items (
+        CREATE TABLE IF NOT EXISTS pc_client (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             uid INTEGER NOT NULL,
             host_computers TEXT NOT NULL,
@@ -50,6 +55,7 @@ def init_db():
 
     conn.commit()
     conn.close()
+
 init_db()
 
 @app.route('/')
@@ -58,7 +64,7 @@ def aaa(): return redirect(url_for('home_page'))
 @app.route('/home')
 def home_page(): return render_template("home_page.html")
 
-@app.route('/home-<username>')
+@app.route('/home/<username>')
 def user_home_page(username):
     logged_in_user = session.get('username')
     if logged_in_user != username:
@@ -113,15 +119,12 @@ def login_page():
 
     return render_template('login_page.html', promt_message = promt_message)
 
-
 @app.route('/about')
 def about_page(): return render_template("about_page.html")
 
-@app.route('/<username>/items', methods=['GET', 'POST'])
-def user_items(username):
-
-    if session.get('username') != username:
-        return redirect(url_for('login_page'))
+@app.route('/pc_client_manager/<username>', methods=['GET', 'POST'])
+def pc_client_manager(username):
+    if session.get('username') != username: return redirect(url_for('login_page'))
 
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
@@ -134,34 +137,39 @@ def user_items(username):
 
     if request.method == 'POST' and 'host_computers' in request.form:
         host_computers = request.form['host_computers']
-        time_start     = request.form['time_start']
-        time_end       = request.form['time_end']
-        status         = 1 if 'status' in request.form else 0
-        ip_address     = request.form['ip_address']
+        time_start = request.form['time_start']
+        time_end = request.form['time_end']
+        ip_address = request.form['ip_address']
 
-        cursor.execute("INSERT INTO items (uid, host_computers, time_start, time_end, status, ip_address) VALUES (?, ?, ?, ?, ?, ?)",
-                       (user_id, host_computers, time_start, time_end, status, ip_address))
+        cursor.execute("INSERT INTO pc_client (host_computers, time_start, time_end, status, ip_address, uid) VALUES (?, ?, ?, ?, ?, ?)",
+                       (host_computers, time_start, time_end, 0, ip_address, user_id))
         conn.commit()
+        flash(f"PC '{host_computers}' added successfully.", "info")
 
-    elif 'shutdown' in request.form:
-        ip_address_to_shutdown = request.form['ip_address']
-        turn_off_pc_windows(ip_address_to_shutdown)
-        item_id = request.form['item_id']
-        cursor.execute("UPDATE items SET status = 0 WHERE id = ?", (item_id,))
-        conn.commit()
-        flash("PC is being turned off.", "info")
+    if request.method == 'POST' and 'update_time' in request.form:
+        host_computers = request.form['host_computers_to_update']
+        new_time_start = request.form['new_time_start']
+        new_time_end = request.form['new_time_end']
 
-    elif request.method == 'POST' and 'item_id' in request.form:
-        item_id = request.form['item_id']
-        status = request.form.get('status', 0)
-        cursor.execute("UPDATE items SET status = ? WHERE id = ?", (status, item_id))
-        conn.commit()
+        cursor.execute("SELECT * FROM pc_client WHERE host_computers = ? AND uid = ?", (host_computers, user_id))
+        existing_pc = cursor.fetchone()
 
-    cursor.execute("SELECT * FROM items WHERE uid = ?", (user_id,))
-    user_items = cursor.fetchall()
+        if existing_pc:
+            cursor.execute("""
+                UPDATE pc_client 
+                SET time_start = ?, time_end = ?, status = 1 
+                WHERE host_computers = ? AND uid = ?
+            """, (new_time_start, new_time_end, host_computers, user_id))
+
+            conn.commit()
+            flash(f"PC '{host_computers}' updated successfully and set to active.", "info")
+        else: flash(f"PC '{host_computers}' not found for update.", "error")
+
+    cursor.execute("SELECT * FROM pc_client WHERE uid = ?", (user_id,))
+    pc_client_manager = cursor.fetchall()
     conn.close()
 
-    return render_template('budget_page.html', username=username, items=user_items)
+    now_time = datetime.now().strftime('%H:%M')
+    return render_template('budget_page.html', username=username, pc_clients=pc_client_manager, now_time=now_time)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == "__main__": app.run(debug=True)

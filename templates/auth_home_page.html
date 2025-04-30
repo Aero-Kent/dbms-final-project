@@ -1,40 +1,34 @@
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
 <head>
   <title>Computer Shop Orgnaizer</title>
 </head>
-
-<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-<body style="background-image: url('{{ url_for('static', filename='images/IMG20250422085341.jpg') }}')">
-
-  <div class = "header">
-    <div style="display: flex; align-items: center;">
-      <img src="{{ url_for('static', filename='images/piggy_bank_PNG56.png') }}" alt="main-logo" width="50" height="50">
-      <span>
-      <h1 style="margin-left: 10px; text-align: left;">Computer Organizer</h1>
-      <h1 style="margin-left: 10px; text-align: left;">Studio (Temporary Name)</h1>
-      </span>
-      <button onclick="window.location.href='about'">ABOUT</button>
-      <button onclick="window.location.href=''">LOGOUT</button>
-      <button onclick="window.location.href='{{ url_for('user_items', username=username) }}'">ITEMS</button>
+<body class = 'home_page_body'>
+  <header>
+    <div style = "display: flex; align-items: center;">
+      <img src = "{{ url_for('static', filename='images/temp_logo.png') }}" alt="main-logo" width="55px" height="40px">
+      <button onclick = "document.getElementById('guide').scrollIntoView({ behavior: 'smooth' });">GUIDE</button>
+      <button onclick="window.location.href='/'">LOGOUT</button>
+      <button onclick="window.location.href='{{ url_for('pc_client_manager', username = username) }}'">COMPUTER MANAGEMENT</button>
+    </div>
+  </header>
+  
+  <div class = "home_page_fixed_wrapper">
+    <div class = "home_page_fixed">
+      <div class = "home_page_fixed_introduction">
+        <h1 style = "font-size: 150px;"><b>WELCOME<br>{{username}}!</b></h1>
+        <p  style = "font-size: 25px;"><br>Thank you for choosing to use this website for you management use.</p>
+      </div>
     </div>
   </div>
 
-  <!--
-  {% for val in content %}
-    <p>{{val}}</p>
-  {% endfor %}
-  -->
-
-  <!--
-  {% for i in range(10) %}
-    {% if i % 2 == 1 %}
-      <p>{{i}}</p>
-    {% endif %}
-  {% endfor %}
-  -->
+  <div class = "home_page_about">
+    <div id = 'guide' class = "home_page_about_1">
+      <h1 style = "font-size: 50px;">SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT</h1>
+      <p><br> SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT</p>
+    </div>
 
 </body>
-
 </html>
