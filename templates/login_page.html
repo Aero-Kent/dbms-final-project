@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Computer Shop Orgnaizer - Login</title>
+</head>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+<body>
+  <div style="display: flex; height: 100vh;">
+    <div class = 'left_signup' style="background-image: url('{{ url_for('static', filename='images/internet-cafe-e1529379039235-860x430.jpg') }}')">
+    </div>
+    <div class = 'right_signup'>
+      <div>
+
+        <form method="POST" onsubmit="this.querySelector('input[type=submit]').disabled = true;">
+        <h2>Login to the website</h2><br>
+
+        <br><label><b>email address</b></label><br>
+        
+        <input class = 'signup_details'
+          type  ="email"
+          name  ="email_address"
+          value ="sample_address@gmail.com">
+          <br>
+        
+        <input class = 'signup_details'
+          type  ="password"
+          name  ="password"
+          value ="abc123">
+          <br>
+          <br><br>
+        <div style="text-align: center;">
+          <input class = 'submit_button' type="submit" value="submit">
+          {% if promt_message %}
+          <br><p style="color: red;">{{ promt_message }}</p>
+          {% endif %}
+          <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -16,9 +16,8 @@
       <h1 style="margin-left: 10px; text-align: left;">Studio (Temporary Name)</h1>
       </span>
       <button onclick="window.location.href='about'">ABOUT</button>
-      <button onclick="window.location.href='login'">LOGIN</button>
-      <button onclick="window.location.href='signup'">SIGNUP</button>
-      <button onclick="window.location.href='computer-organizer-<name>'">BUDGET ORGANIZER</button>
+      <button onclick="window.location.href=''">LOGOUT</button>
+      <button onclick="window.location.href='{{ url_for('user_items', username=username) }}'">ITEMS</button>
     </div>
   </div>
 

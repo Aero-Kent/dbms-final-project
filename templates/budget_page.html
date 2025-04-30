@@ -1,15 +1,74 @@
-<!DOCTYPE html>
-<html>
+<h2>{{ username }}'s Items</h2>
 
-<head>
-  <title>Budget Visualizer Studio (Temporary Name)</title>
-</head>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div style="background: lightyellow; padding: 10px; border: 1px solid #ccc;">
+      {% for msg in messages %}
+        <p>{{ msg }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 
-<body>
-  <img src="templates\resources\piggy_bank_PNG56.png" alt="main-logo">
-  <h1>This is the main organizer itself!</h1>
-  <p>Sample Text</p>
+<form method="POST">
+  <label>Host Computer:</label>
+  <input type="text" name="host_computers" required><br>
 
-</body>
+  <label>Start Time:</label>
+  <input type="time" name="time_start" required><br>
 
-</html>
+  <label>End Time:</label>
+  <input type="time" name="time_end" required><br>
+
+  <label>Status:</label>
+  <input type="checkbox" name="status"><br>
+
+  <label>IP Address:</label>
+  <input type="text" name="ip_address" required><br>
+
+  <input type="submit" value="Add Item">
+</form>
+
+<table border="1">
+  <tr>
+    <th>Host Computer</th>
+    <th>Start Time</th>
+    <th>End Time</th>
+    <th>Status</th>
+    <th>IP Address</th>
+    <th>Action</th>
+  </tr>
+
+  {% for item in items %}
+  <form method="POST">
+    <tr>
+      <td>{{ item[2] }}</td>
+      <td>{{ item[3] }}</td>
+      <td>{{ item[4] }}</td>
+
+      <td>
+        <button type="submit" name="status" value="{{ 1 if item[5] == 0 else 0 }}">
+          {% if item[5] == 1 %}
+            Active
+          {% else %}
+            Inactive
+          {% endif %}
+        </button>
+      </td>
+
+      <td>{{ item[6] }}</td>
+      <input type="hidden" name="item_id" value="{{ item[0] }}">
+
+      <td>
+        {% if item[5] == 1 %}
+          <form method="POST" action="{{ url_for('turn_off_pc') }}" style="display: inline;">
+            <input type="hidden" name="ip_address" value="{{ item[6] }}">
+            <input type="hidden" name="item_id" value="{{ item[0] }}">
+            <button type="submit">Shutdown</button>
+          </form>
+        {% endif %}
+      </td>
+    </tr>
+  </form>
+  {% endfor %}
+</table>

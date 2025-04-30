@@ -42,3 +42,60 @@ button {
     opacity: 0.5;
   }
 }
+
+.password_div {
+  display: flex;
+  align-items: center;
+  float: right;
+  background-color: red;
+}
+
+.signup_details {
+  width: 500px;
+  padding: 8px;
+}
+
+.left_signup {
+  flex: 1;
+  background-color: lightblue;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.right_signup {
+  flex: 1;
+  background-color: white; 
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.submit_button {
+  padding: 20px;
+  margin-left: 1%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-weight: bold;
+  border: 0;
+  cursor: pointer;
+  font-size: 15px;
+  background-color: rgba(0, 0, 0, 0.226);
+  transition: box-shadow 0.16s;
+  transition: background-color 1s,
+      color 1s;
+
+  &:hover {
+    background-color: white;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.16);
+    color: black;
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+}
