@@ -103,6 +103,31 @@ button {
   }
 }
 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px;
+
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.button-right {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 10px;
+  margin-right: 2rem;
+}
+
+
+
 .password_div {
   display: flex;
   align-items: center;
