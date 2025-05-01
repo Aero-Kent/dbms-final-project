@@ -13,7 +13,7 @@
     <div class = 'left_signup' style="background-image: url('{{ url_for('static', filename='images/internet-cafe-e1529379039235-860x430.jpg') }}')">
     </div>
     <div class = 'right_signup'>
-      <div>
+      <div class="right-signup-card">
 
         <form method="POST" onsubmit="this.querySelector('input[type=submit]').disabled = true;">
         <h2>Login to the website</h2><br>
@@ -33,7 +33,7 @@
           <br>
           <br><br>
         <div style="text-align: center;">
-          <input class = 'submit_button' type="submit" value="submit">
+          <input class = 'submit_button' type="submit" value="Login">
           {% if promt_message %}
           <br><p style="color: red;">{{ promt_message }}</p>
           {% endif %}

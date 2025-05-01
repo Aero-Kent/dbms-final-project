@@ -103,6 +103,31 @@ button {
   }
 }
 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px;
+
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.button-right {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 10px;
+  margin-right: 2rem;
+}
+
+
+
 .password_div {
   display: flex;
   align-items: center;
@@ -125,12 +150,39 @@ button {
 
 .right_signup {
   flex: 1;
-  background-color: white; 
+  background-color: rgb(41, 21, 54); 
   display: flex;
   flex-direction: column; 
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+
+.right-signup-card {
+  background-color: rgb(62, 29, 83);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Floating effect */
+  color: white;
+  width: 100%;
+  max-width: 400px;
+}
+
+.signup_details {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: none;
+  box-sizing: border-box;
+}
+
+.login-button {
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
 }
 
 .submit_button {
@@ -141,10 +193,10 @@ button {
   padding-left: 10px;
   padding-right: 10px;
   font-weight: bold;
-  border: 0;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 15px;
-  background-color: rgba(0, 0, 0, 0.226);
+  background-color: rgb(255, 255, 255);
   transition: box-shadow 0.16s;
   transition: background-color 1s,
       color 1s;

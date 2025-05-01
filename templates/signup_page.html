@@ -12,12 +12,12 @@
     <div class = 'left_signup' style="background-image: url('{{ url_for('static', filename='images/internet-cafe-e1529379039235-860x430.jpg') }}')">
     </div>
     <div class = 'right_signup'>
-      <div>
+      <div class="right-signup-card">
 
         <form method="POST" onsubmit="this.querySelector('input[type=submit]').disabled = true;">
-        <h2>Signup to the website</h2><br>
+        <h2 style="text-align: center; font-size: 5vh;">Signup to the website</h2><br>
 
-        <br><label><b>email address</b></label><br>
+        <br><label><b>Email Address</b></label><br>
         
         <input class = 'signup_details'
           type  ="email"
@@ -25,14 +25,14 @@
           value ="sample_address@gmail.com">
           <br>
         
-        <br><label><b>username</b></label><br>
+        <br><label><b>Username</b></label><br>
         
         <input class = 'signup_details'
           type  ="text"
           name  ="username"
           value ="John Smith">
           <br>
-        <br><label><b>password</b></label><br>
+        <br><label><b>Password</b></label><br>
         
         <input class = 'signup_details'
           type  ="password"
@@ -45,6 +45,7 @@
           {% if promt_message %}
           <br><p style="color: red;">{{ promt_message }}</p>
           {% endif %}
+          <button class = 'login-button'><a href="/login">Proceed to login</a></button>
         </div>
         </form>
       </div>

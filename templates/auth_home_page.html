@@ -1,34 +1,56 @@
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-
 <head>
-  <title>Computer Shop Orgnaizer</title>
+  <title>Computer Shop Organizer</title>
 </head>
-<body class = 'home_page_body'>
+<body class='home_page_body'>
   <header>
-    <div style = "display: flex; align-items: center;">
-      <img src = "{{ url_for('static', filename='images/temp_logo.png') }}" alt="main-logo" width="55px" height="40px">
-      <button onclick = "document.getElementById('guide').scrollIntoView({ behavior: 'smooth' });">GUIDE</button>
+    <div style="display: flex; align-items: center;">
+      <img src="{{ url_for('static', filename='images/temp_logo.png') }}" alt="main-logo" width="55px" height="40px">
+      <button onclick="window.location.href='{{ url_for('user_home_page', username=username) }}'">HOME</button>
+      <button onclick="document.getElementById('guide').scrollIntoView({ behavior: 'smooth' });">GUIDE</button>
       <button onclick="window.location.href='/'">LOGOUT</button>
-      <button onclick="window.location.href='{{ url_for('pc_client_manager', username = username) }}'">COMPUTER MANAGEMENT</button>
+      <button onclick="window.location.href='{{ url_for('pc_client_manager', username=username) }}'">COMPUTER MANAGEMENT</button>
     </div>
   </header>
-  
-  <div class = "home_page_fixed_wrapper">
-    <div class = "home_page_fixed">
-      <div class = "home_page_fixed_introduction">
-        <h1 style = "font-size: 150px;"><b>WELCOME<br>{{username}}!</b></h1>
-        <p  style = "font-size: 25px;"><br>Thank you for choosing to use this website for you management use.</p>
+
+  <div class="home_page_fixed_wrapper">
+    <div class="home_page_fixed">
+      <div class="home_page_fixed_introduction">
+        <h1 style="font-size: 150px;"><b>WELCOME<br>{{ username }}!</b></h1>
+        <p style="font-size: 25px;"><br>Thank you for choosing to use this website for your management use.</p>
       </div>
     </div>
   </div>
 
-  <div class = "home_page_about">
-    <div id = 'guide' class = "home_page_about_1">
-      <h1 style = "font-size: 50px;">SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT</h1>
+  <div class="home_page_about">
+    <div id="guide" class="home_page_about_1">
+      <h1 style="font-size: 50px;">SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT</h1>
       <p><br> SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT</p>
-    </div>
 
+      <h3>Total Earnings: ₱{{ total_earnings }}</h3>
+
+      <table border="1">
+        <thead>
+            <tr>
+                <th>Host Computer</th>
+                <th>Earnings</th>
+            </tr>
+        </thead>
+        <form method="POST" action="{{ url_for('user_home_page', username=username) }}">
+          <button type="submit">Clear Earnings</button>
+        </form>
+        <tbody>
+          {% for pc in pc_client_manager %}
+          <tr>
+              <td>{{ pc[0] }}</td>
+              <td>₱{{ pc[1] or 0.0 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </body>
 </html>

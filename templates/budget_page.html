@@ -4,14 +4,15 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <title>PC Client Manager</title>
 </head>
-<body class='home_page_body'>
+<body class="home_page_body">
 
 <header>
   <div style="display: flex; align-items: center;">
     <img src="{{ url_for('static', filename='images/temp_logo.png') }}" alt="main-logo" width="55px" height="40px">
+    <button onclick="window.location.href='{{ url_for('user_home_page', username=username) }}'">HOME</button>
     <button onclick="document.getElementById('guide').scrollIntoView({ behavior: 'smooth' });">GUIDE</button>
     <button onclick="window.location.href='/'">LOGOUT</button>
-    <button onclick="window.location.href='{{ url_for('pc_client_manager', username = username) }}'">COMPUTER MANAGEMENT</button>
+    <button onclick="window.location.href='{{ url_for('pc_client_manager', username=username) }}'">COMPUTER MANAGEMENT</button>
   </div>
 </header>
 
@@ -34,10 +35,6 @@
     <form method="POST">
       <label>Host Computer:</label>
       <input type="text" name="host_computers" required><br>
-      <label>Start Time:</label>
-      <input type="time" name="time_start" required><br>
-      <label>End Time:</label>
-      <input type="time" name="time_end" required><br>
       <label>IP Address:</label>
       <input type="text" name="ip_address" required><br>
       <input type="submit" value="Add PC">
@@ -47,13 +44,23 @@
 
     <h3>Update PC Time Start and End</h3>
     <form method="POST">
-      <label>Host Computer to Update:</label>
+      <input type="hidden" name="update_time" value="1">
+      <label>Host Computer (to update):</label>
       <input type="text" name="host_computers_to_update" required><br>
       <label>New Start Time:</label>
       <input type="time" name="new_time_start" required><br>
       <label>New End Time:</label>
       <input type="time" name="new_time_end" required><br>
-      <input type="submit" name="update_time" value="Update PC">
+      <label>Earnings:</label>
+      <input type="number" name="earnings" step="0.01" required><br>
+      <input type="submit" value="Update Time and Save Earnings">
+    </form>
+
+    <h3>Remove PC</h3>
+    <form method="POST">
+      <label>Host Computer to Remove:</label>
+      <input type="text" name="remove_host_computers" required>
+      <input type="submit" value="Remove PC">
     </form>
 
   </div>
@@ -61,48 +68,40 @@
   <div class="org_maindiv_right">
     <br><br><br><br><br><br><br>
 
-    <table border="1">
-      <tr>
-        <th>Host Computer</th>
-        <th>Start Time</th>
-        <th>End Time</th>
-        <th>Status</th>
-        <th>IP Address</th>
-        <th>Action</th>
-      </tr>
-
-      {% for pc in pc_clients %}
-      <tr>
-        <td>{{ pc[2] }}</td>
-        <td>{{ pc[3] }}</td>
-        <td>{{ pc[4] }}</td>
-
-        <td>
-          <form method="POST" style="display: inline;">
-            <button type="submit" name="status" value="{{ 1 if pc[5] == 0 else 0 }}">
-              {% if pc[5] == 1 %}
-                Active
-              {% else %}
-                Inactive
-              {% endif %}
-            </button>
-            <input type="hidden" name="pc_id" value="{{ pc[0] }}">
-          </form>
-        </td>
-
-        <td>{{ pc[6] }}</td>
-        <td>
-          {% if pc[5] == 1 %}
-          <form method="POST" action="{{ url_for('turn_off_pc') }}" style="display: inline; margin: 0;">
-            <input type="hidden" name="ip_address" value="{{ pc[6] }}">
-            <input type="hidden" name="pc_id" value="{{ pc[0] }}">
-            <button type="submit">Shutdown</button>
-          </form>
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
+    <table>
+      <thead>
+          <tr>
+              <th>Host Computer</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Status</th>
+              <th>IP Address</th>
+              <th>Action</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for pc in pc_clients %}
+        <tr>
+            <td>{{ pc[1] }}</td>                                  <!-- host_computers -->
+            <td>{{ pc[2] }}</td>                                  <!-- time_start -->
+            <td>{{ pc[3] }}</td>                                  <!-- time_end -->
+            <td>{{ 'Inactive' if pc[4] == 0 else 'Active' }}</td> <!-- status -->
+            <td>{{ pc[5] }}</td>                                  <!-- ip_address -->
+            <td>
+                {% if pc[4] == 1 %}
+                <form method="POST" action="{{ url_for('turn_off_pc') }}">
+                    <input type="hidden" name="host_computers" value="{{ pc[1] }}">
+                    <button type="submit">Shutdown</button>
+                </form>
+                {% else %}
+                -
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}        
+      </tbody>
     </table>
+    
 
   </div>
 </div>
