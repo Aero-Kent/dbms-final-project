@@ -9,11 +9,13 @@
     <div style="display: flex; align-items: center;">
       <img src="{{ url_for('static', filename='images/temp_logo.png') }}" alt="main-logo" width="55px" height="40px">
       <button onclick="window.location.href='{{ url_for('user_home_page', username=username) }}'">HOME</button>
-      <button onclick="document.getElementById('guide').scrollIntoView({ behavior: 'smooth' });">GUIDE</button>
+      <button onclick="document.getElementById('guide').scrollIntoView({ behavior: 'smooth' })">GUIDE</button>
       <button onclick="window.location.href='/'">LOGOUT</button>
       <button onclick="window.location.href='{{ url_for('pc_client_manager', username=username) }}'">COMPUTER MANAGEMENT</button>
     </div>
   </header>
+
+  <div class="sentinel"></div>
 
   <div class="home_page_fixed_wrapper">
     <div class="home_page_fixed">
@@ -25,12 +27,10 @@
   </div>
 
   <div class="home_page_about">
-    <div id="guide" class="home_page_about_1">
-      <h1 style="font-size: 50px;">SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT</h1>
-      <p><br> SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT</p>
-
-      <h3>Total Earnings: ₱{{ total_earnings }}</h3>
-
+    <div class="home_page_about_1">
+      <div class = "earnings_table">
+      <h1>{{username}}'s Total Earnings</h1>
+      <br>
       <table border="1">
         <thead>
             <tr>
@@ -38,9 +38,6 @@
                 <th>Earnings</th>
             </tr>
         </thead>
-        <form method="POST" action="{{ url_for('user_home_page', username=username) }}">
-          <button type="submit">Clear Earnings</button>
-        </form>
         <tbody>
           {% for pc in pc_client_manager %}
           <tr>
@@ -48,9 +45,100 @@
               <td>₱{{ pc[1] or 0.0 }}</td>
           </tr>
           {% endfor %}
+          <tr>
+            <td><b>Total Earnings:</b></td>
+            <td><b>₱{{ total_earnings }}</b></td>
+          </tr>
+          <tr>
+            <td><b></b></td>
+            <td>
+            <form method="POST" action="{{ url_for('user_home_page', username=username) }}">
+              <button class = 'clear_button' type="submit">Clear Earnings</button>
+            </form>
+            </td>
+          </tr>
         </tbody>
       </table>
+      </div>
     </div>
+
+    <div id="help" class="help">
+      <h1 style="font-size: 50px;">HOW TO MAKE USE OF THE COMPUTER ORGANIZER?</h1>
+
+      <h3 style="font-size: 20px;text-align: justify;"><br>
+        In this form, the following will contain the description on what are the usage as well as the functionalities of the organizer in order to both better make use as well 
+        as interact with the website.
+      </h3>
+
+      <h2 style="text-align: left;"><br><br><br>
+        1. The Earnings Table
+      </h2>
+      <br><p style="font-size: 20px;text-align: justify;">
+        In the home user interface, the summarized earnings table can be seen with the containing the earnings of each individual computers as well as their the
+        overall earnings of all of them located at the bottom. If the user wishes to reroll for another earning count, they can reset the table again, removing
+        the existing datas within.
+      </p><br>
+      <br><img src="{{ url_for('static', filename='images/Screenshot 2025-05-01 135703.png') }}" alt="The Main User Interface" width="960px" height="750px"
+      style="box-shadow: 0 8px 20px rgba(199, 137, 228, 0.3)">
+
+
+      <h2 style="text-align: left;"><br><br><br>
+        2. Proceeding to the main organizer Interface
+      </h2>
+      <br><p style="font-size: 20px;text-align: justify;">
+        When it comes to proceeding to the actual computer management system, the button located at the header will take the user to the user interface for organizing
+        the instances of the registered comptuers.
+      </p><br>
+      <br><img src="{{ url_for('static', filename='images/how1.png') }}" alt="The Main User Interface" width="960px" height="400px"
+      style="box-shadow: 0 8px 20px rgba(199, 137, 228, 0.3)">
+
+      <h2 style="text-align: left;"><br><br><br>
+        3. Creating a new host computer
+      </h2>
+      <br><p style="font-size: 20px;text-align: justify;">
+        When navigating to the main organizer interface, various forms can be located at the left side of the webpage as well as the a table containing statuses of the
+        of the registerd comptuers. The user cannot create a same PC that has the same ID.
+      </p><br>
+      <br><img src="{{ url_for('static', filename='images/how2.png') }}" alt="The Main User Interface" width="960px" height="550px"
+      style="box-shadow: 0 8px 20px rgba(199, 137, 228, 0.3)">
+
+      <h2 style="text-align: left;"><br><br><br>
+        4. Updating an existing computer
+      </h2>
+      <br><p style="font-size: 20px;text-align: justify;">
+        When a computer has been registed, the user may now interact with it, otherwise this will return an error indicating that the inserted computer does not exist.
+        In here, the user needs to input the total hours a computer can be ran as well as the total money that was given for that host computer.
+      </p><br>
+      <br><img src="{{ url_for('static', filename='images/how3.png') }}" alt="The Main User Interface" width="960px" height="650px"
+      style="box-shadow: 0 8px 20px rgba(199, 137, 228, 0.3)">
+
+      <h2 style="text-align: left;"><br><br><br>
+        5. Removing/Shutdown a running computer
+      </h2>
+      <br><p style="text-align: justify;font-size: 20px;">
+        When an instance of computer is up, it will not automatically turn that computer off but will instead give the owner the oppotunity to give them a grace period 
+        for them to either close all necessary/important tabs and files as well as purchase a time extension if need be.
+      </p><br>
+      <br><img src="{{ url_for('static', filename='images/how4.png') }}" alt="The Main User Interface" width="960px" height="350px"
+      style="box-shadow: 0 8px 20px rgba(199, 137, 228, 0.3)">
+      <br><img src="{{ url_for('static', filename='images/how5.png') }}" alt="The Main User Interface" width="960px" height="350px"
+      style="box-shadow: 0 8px 20px rgba(199, 137, 228, 0.3)">
+
+      <h2 style="text-align: left;"><br><br><br>
+        6. Removing an Existing computer
+      </h2>
+      <br><p style="font-size: 20px; text-align: justify;">
+        Lastly, the option of removing a computer can be selected at the very bottom for instanes such as updating an ip address or removing a host commputer from the
+        system.
+      </p><br>
+      <br><img src="{{ url_for('static', filename='images/how6.png') }}" alt="The Main User Interface" width="960px" height="300px"
+      style="box-shadow: 0 8px 20px rgba(199, 137, 228, 0.3)">
+      <br><img src="{{ url_for('static', filename='images/how7.png') }}" alt="The Main User Interface" width="960px" height="300px"
+      style="box-shadow: 0 8px 20px rgba(199, 137, 228, 0.3)">
+
+    </div>
+
+
   </div>
 </body>
 </html>
