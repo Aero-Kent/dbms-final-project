@@ -33,7 +33,6 @@
     {% endif %}
     {% endwith %}
 
-    <!-- Add New PC Form -->
     <h3>Add New PC</h3>
     <form method="POST">
       <label>Host Computer:</label>
@@ -45,7 +44,6 @@
 
     <br><br>
 
-    <!-- Update PC Time and Earnings Form -->
     <h3>Update PC Time Start and End</h3>
     <form method="POST">
       <input type="hidden" name="update_time" value="1">
@@ -62,7 +60,6 @@
 
     <br><br>
 
-    <!-- Remove PC Form -->
     <h3>Remove PC</h3>
     <form method="POST">
       <label>Host Computer to Remove:</label>
@@ -77,7 +74,6 @@
   <div class="org_maindiv_right">
     <br><br><br><br><br><br><br>
     <div class="org-maindiv-right-card">
-      <!-- Table with PC Clients -->
       <table border="1">
         <thead>
           <tr>
@@ -92,11 +88,11 @@
         <tbody>
           {% for pc in pc_clients %}
           <tr>
-            <td>{{ pc[1] }}</td>  <!-- host_computers -->
-            <td>{{ pc[2] }}</td>  <!-- time_start -->
-            <td>{{ pc[3] }}</td>  <!-- time_end -->
+            <td>{{ pc[1] }}</td>                                  <!-- host_computers -->
+            <td>{{ pc[2] }}</td>                                  <!-- time_start -->
+            <td>{{ pc[3] }}</td>                                  <!-- time_end -->
             <td>{{ 'Inactive' if pc[4] == 0 else 'Active' }}</td> <!-- status -->
-            <td>{{ pc[5] }}</td>  <!-- ip_address -->
+            <td>{{ pc[5] }}</td>                                  <!-- ip_address -->
             <td>
               {% if pc[4] == 1 %}
               <form method="POST" action="{{ url_for('turn_off_pc') }}">
