@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='budget-page.css') }}">
   <title>PC Client Manager</title>
 </head>
 <body class='home_page_body'>
@@ -18,7 +18,8 @@
 <div style="display: flex; height: auto;">
   <div class="org_maindiv_left">
     <br><br><br><br><br><br><br>
-    <h2>{{ username }}'s pc_clients</h2>
+    <div class="org-maindiv-left-card">
+      <h2>{{ username }}'s pc_clients</h2>
 
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -55,13 +56,14 @@
       <input type="time" name="new_time_end" required><br>
       <input type="submit" name="update_time" value="Update PC">
     </form>
+    </div>
 
   </div>
 
   <div class="org_maindiv_right">
     <br><br><br><br><br><br><br>
-
-    <table border="1">
+    <div class="org-maindiv-right-card">
+      <table border="1">
       <tr>
         <th>Host Computer</th>
         <th>Start Time</th>
@@ -103,6 +105,8 @@
       </tr>
       {% endfor %}
     </table>
+    </div>
+    
 
   </div>
 </div>
