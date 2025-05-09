@@ -90,6 +90,34 @@
     max-height: 80vh;
     overflow: auto;
   }
+
+  .org-maindiv-right-card {
+    background-color: rgb(184, 105, 105);
+    max-height: 80vh;
+    width: 100%;
+    max-width: 800px;
+    overflow: auto;
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+    }
+  
+    th {
+      padding: 10px;
+      color: white;
+      text-align: left;
+      word-wrap: break-word;
+    }
+  
+    td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-align: left;
+      word-wrap: break-word;
+    }
+  }
   
   form {
     display: flex;

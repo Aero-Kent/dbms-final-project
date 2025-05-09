@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='budget-page.css') }}">
+  <title>Admin Home Page</title>
+</head>
+<body class="home_page_body">
+
+<header>
+  <div style="display: flex; align-items: center;">
+    <img src="{{ url_for('static', filename='images/temp_logo.png') }}" alt="main-logo" width="55px" height="40px">
+    <button onclick="window.location.href='/'">LOGOUT</button>
+  </div>
+</header>
+
+<div style="display: flex; height: auto;">
+  <div class="org_maindiv_left">
+    <br><br><br><br><br><br><br>
+    <div class="org-maindiv-left-card">
+      <h2>Admin Dashboard</h2>
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div style="background: #5c3c7d; padding: 10px; border: 1px solid #ccc;">
+        {% for msg in messages %}
+        <p>{{ msg }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      <div style="margin-bottom: 20px;">
+        <h3>Remove an Entire User</h3>
+        <form method="POST" action="{{ url_for('admin_home_page') }}">
+          <label for="user_id">User ID:</label>
+          <input type="number" name="user_id" required><br>
+          <input type="submit" value="Remove User">
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="org_maindiv_right">
+    <br><br><br><br><br><br><br>
+    <div class="org-maindiv-right-card">
+      <h3>All PC Clients</h3>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Host Computer</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Status</th>
+            <th>IP Address</th>
+            <th>Earnings</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for col in overall_database %}
+            {% if col[2] != 'admin' %}
+              <tr>
+                <td>{{ col[0] }}</td>         <!-- uid -->
+                <td>{{ col[1] }}</td>         <!-- email -->
+                <td>{{ col[2] }}</td>         <!-- username -->
+                <td>{{ col[3] or '—' }}</td>  <!-- host_computers -->
+                <td>{{ col[4] or '—' }}</td>  <!-- time_start -->
+                <td>{{ col[5] or '—' }}</td>  <!-- time_end -->
+                <td>
+                  {% if col[6] == 1 %}
+                    Active
+                  {% elif col[6] == 0 %}
+                    Inactive
+                  {% else %}
+                    —
+                  {% endif %}
+                </td>
+                <td>{{ '#####' if col[7] else '—' }}</td> <!-- masked IP -->
+                <td>{{ col[8] }}</td>                     <!-- earnings -->
+                <td>
+                  <form method="POST" action="{{ url_for('admin_home_page') }}">
+                    <input type="hidden" name="delete_uid" value="{{ col[0] }}">
+                    <input type="hidden" name="delete_host_computers" value="{{ col[3] }}">
+                    <button type="submit" style="color: red;">Del</button>
+                  </form>
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

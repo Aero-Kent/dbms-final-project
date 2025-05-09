@@ -4,7 +4,6 @@ import sqlite3
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
-# app.secret_key = 'your_secret_key'
 app.secret_key = 'cheese_burger_footletuce'
 
 # this function simply calls a function to turn of a specific ip-address.
@@ -158,7 +157,11 @@ def login_page():
         if user:
             session['username'] = user[2]
             session['user_id'] = user[0]
-            return redirect(url_for('user_home_page', username=user[2]))
+
+            if user[2] == 'admin':
+                return redirect(url_for('admin_home_page'))  # 👈 Redirect admin to /admin
+            else:
+                return redirect(url_for('user_home_page', username=user[2]))
         else:
             promt_message = "Invalid email address or password."
 
@@ -275,5 +278,41 @@ def turn_off_pc():
     conn.close()
 
     return redirect(url_for('pc_client_manager', username=session.get('username')))
+
+# admin page, ability to either individually remove a specific data or entire user lang dito...
+@app.route('/admin', methods=['GET', 'POST'])
+def admin_home_page():
+    if session.get('username') != 'admin': return redirect(url_for('login_page'))
+
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+        user_id_to_remove = request.form.get('user_id')
+        if user_id_to_remove:
+            try:
+                user_id_to_remove = int(user_id_to_remove)
+
+                cursor.execute("DELETE FROM profits WHERE uid = ?", (user_id_to_remove,))
+                cursor.execute("DELETE FROM pc_client WHERE uid = ?", (user_id_to_remove,))
+                cursor.execute("DELETE FROM users WHERE uid = ?", (user_id_to_remove,))
+
+                conn.commit()
+                flash(f"User with ID {user_id_to_remove} and all of its data have been deleted.", "info")
+            except ValueError:
+                flash("Invalid User ID entered. Please try again.", "error")
+            except Exception as e:
+                flash(f"An error occurred: {e}", "error")
+
+    cursor.execute("""
+        SELECT u.uid, u.email_address, u.username, pc.host_computers, pc.time_start, pc.time_end, pc.status, pc.ip_address, p.earnings
+        FROM users u
+        LEFT JOIN pc_client pc ON u.uid = pc.uid
+        LEFT JOIN profits p ON pc.host_computers = p.host_computers AND u.uid = p.uid
+    """)
+    overall_database = cursor.fetchall()
+    conn.close()
+
+    return render_template('admin_home_page.html', overall_database=overall_database)
 
 if __name__ == "__main__": app.run(debug=True)
